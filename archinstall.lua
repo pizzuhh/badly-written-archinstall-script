@@ -69,7 +69,7 @@ function chroot_setup()
 
 	print("1. Install few packages(networkmanager, sudo, base-devel)\n2. Set-up loacels, users, hostname and sudo\n3. Install boot manager (GRUB)\n4. Choose desktop\n5. Exit chroot")
 	local choice = io.read()
-	if choise == "1" then
+	if choice == "1" then
 		os.execute("pacman -S networkmanager sudo base-devel")
 		chroot_setup()
 	elseif choice == "2" then
