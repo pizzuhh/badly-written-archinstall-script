@@ -1,4 +1,4 @@
-# dev
+# badly-written-archinstall-script
 An archinstall script written in lua
 
 (idk lua so any tips on how to write in are welcome)
