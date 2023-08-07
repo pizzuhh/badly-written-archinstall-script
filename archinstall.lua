@@ -83,6 +83,7 @@ function chroot_setup()
 		chroot_setup()
 	elseif choice == "5" then
 		print("To exit chroot simply type \"exit\"")
+		os.exit(0)
 	else
 		print("Invalid option")
 		chroot_setup()
@@ -149,7 +150,7 @@ function main()
 		local par = io.read()
 		if par == "1" then
 			part()
-			os.execute("sleep " .. tonumber(5))
+			os.execute("sleep 5")
 			main()
 		elseif par == "2" then
 			os.exit(2)
@@ -158,7 +159,7 @@ function main()
 		end
 	elseif choice == "3" then
 		install()
-		os.execute("sleep " .. tonumber(10))
+		os.execute("sleep 10")
 		main()
 	
 	elseif choice == "4" then
