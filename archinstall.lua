@@ -1,7 +1,7 @@
 function install()
-	io.write("Pacstrap will install the base system! the default command will be: pacstrap -K /mnt linux linux-firmware base vim (if you want to install other packages enter the names here MAKE SURE THEY ARE IN CORE AND EXTRA REPOS! or type none to skip this): ")
+	io.write("Pacstrap will install the base system! the default command will be: \"pacstrap -K /mnt linux linux-firmware base vim lua\" (if you want to install other packages enter the names here MAKE SURE THEY ARE IN CORE AND EXTRA REPOS! or type none to skip this): ")
 	pkg = io.read()
-	local command = "pacstrap -K /mnt linux linux-firmware base vim"
+	local command = "pacstrap -K /mnt linux linux-firmware base vim lua"
 	if pkg ~= "none" then
 		local full = string.format("%s %s", command, pkg)
 		print(full)
@@ -17,7 +17,7 @@ function install()
 		end
 	end
 	print("\n\n\n!!!FINISHED PACSTRAP-ING!!!\nGENERATING FSTAB\n\n\n")
-	local fstab = os.execute("genfstab -U /mnt >> /mnt/etc/fstab")
+	local fstab = os.execute("genfstab -U /mnt > /mnt/etc/fstab")
 	if fstab == nil then
 		print("fstab failed?")
 	end
@@ -43,7 +43,7 @@ end
 
 function main()
 	os.execute("clear")
-	print("1. Partition the disk\n2. Format and mount the paritions\n3. Pacstrap the system and generate fstab")
+	print("1. Partition the disk\n2. Format and mount the paritions\n3. Pacstrap the system and generate fstab\n4. CHROOT")
 	local choice = io.read()
 	if choice == "1" then
 		os.execute("cfdisk")
@@ -64,7 +64,14 @@ function main()
 		install()
 		os.execute("sleep " .. tonumber(10))
 		main()
+	
+	elseif choice == "4" then
+		print("This file will be copied to the root of the choorted enviroment (simply do cd /) and you'll be able to execute it!\nContinue from option 5 when you execute it in the chrooted enviroment!")
+		os.execute("sleep 10")
+		os.execute("cp ./archinstall.lua /mnt/archinstall.lua")
+		os.execute("arch-chroot /mnt")
 
+	
 	else 
 		print("Invalid option!")
 	end
