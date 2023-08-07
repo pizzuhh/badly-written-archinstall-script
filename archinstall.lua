@@ -5,13 +5,22 @@ function install()
 	if pkg ~= "none" then
 		local full = string.format("%s %s", command, pkg)
 		print(full)
-		os.execute(full)
+		local ret = os.execute(full)
+		if ret == nil then
+			print("pacstrap faialed?")
+		end
 	else
 		print(command)
-		os.execute(command)
+		local ret = os.execute(command)
+		if ret == nil then
+			print("pacstrap faialed?")
+		end
 	end
 	print("\n\n\n!!!FINISHED PACSTRAP-ING!!!\nGENERATING FSTAB\n\n\n")
-	os.execute("genfstab -U /mnt >> /mnt/etc/fstab")
+	local fstab = os.execute("genfstab -U /mnt >> /mnt/etc/fstab")
+	if fstab == nil then
+		print("fstab failed?")
+	end
 end
 
 
