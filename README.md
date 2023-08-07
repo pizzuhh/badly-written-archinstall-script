@@ -17,4 +17,12 @@ Q: When will the final version come?
 
 A: Maybe this or the next month
 
+# How do i use it?
+Firstly make sure you have git and lua installed.
+Run ``pacman-key --init`` and install git ``pacman -Sy git`` 
+
+You should probably have lua installed but if you don't do ``pacman -S lua``
+
+Next up clone the repo with ``git clone https://github.com/pizzuhh/badly-written-archinstall-script``, ``cd ./badly-written-archinstall-script`` and run it ``lua archinstall.lua``
+
 #### More changes soon
