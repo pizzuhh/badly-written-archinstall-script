@@ -1,3 +1,19 @@
+function desktop()
+	print("THEY WONT BE CONFIGURED!\n1. GNOME\n2. KDE\nmore soon!")
+	local choice = io.read()
+	if choice == "1" then
+		os.execute("pacman -S gnome xorg xorg-server")
+		os.execute("systemctl enable gdm.service")
+	elseif choice == "2" then
+		os.execute("pacman -S xorg plasma plasma-wayland-session kde-applications")
+		os.execute("systemctl enable sddm.service")
+	else
+		print("Invalid option")
+		desktop()
+	end
+	
+end
+
 function setup_grub()
 	print("Do you even want to install GRUB? If you don't want to install grub it'll make this system unbootable until you add it to your current bootloader (if you dualboot)[y/n]")
 	local yes_no = io.read()
@@ -67,6 +83,9 @@ function chroot_setup()
 		chroot_setup()
 	elseif choice == "5" then
 		os.execute("exit")
+	else
+		print("Invalid option")
+		chroot_setup()
 
 	end
 
@@ -92,7 +111,9 @@ function install()
 		end
 	end
 	print("\n\n\n!!!FINISHED PACSTRAP-ING!!!\nGENERATING FSTAB\n\n\n")
+	print("genfstab -U /mnt > /mnt/etc/fstab")
 	local fstab = os.execute("genfstab -U /mnt > /mnt/etc/fstab")
+	os.execute("cat /mnt/etc/fstab")
 	if fstab == nil then
 		print("fstab failed?")
 	end
@@ -152,6 +173,7 @@ function main()
 
 	else 
 		print("Invalid option!")
+		main()
 	end
 
 
