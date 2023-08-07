@@ -1,4 +1,4 @@
-function desktop()
+function DE()
 	print("THEY WONT BE CONFIGURED!\n1. GNOME\n2. KDE\nmore soon!")
 	local choice = io.read()
 	if choice == "1" then
@@ -38,14 +38,14 @@ end
 function usr_setup()
 	-- user setup
 	io.write("User name: ")
-	local username = io.read()
+	local usr = io.read()
 
-	os.execute("echo %wheel ALL=(ALL:ALL) ALL >> /etc/sudoers")
-	os.execute(string.format("useradd -m %s", username))
-	os.execute(string.format("usermod -aG wheel,audio,video,storage %s", usernaame))
+	os.execute("echo \"%wheel ALL=(ALL:ALL) ALL\" >> /etc/sudoers")
+	os.execute(string.format("useradd -m %s", usr))
+	os.execute(string.format("usermod -aG wheel,audio,video,storage %s", usr))
 	
 	print("Setting up password for your user\n\n")
-	os.execute(string.format("passwd %s", username))
+	os.execute(string.format("passwd %s", usr))
 	print("Setting up password for root user\n\n")
 	os.execute("passwd")
 	
@@ -82,7 +82,7 @@ function chroot_setup()
 		DE()
 		chroot_setup()
 	elseif choice == "5" then
-		os.execute("exit")
+		print("To exit chroot simply type \"exit\"")
 	else
 		print("Invalid option")
 		chroot_setup()
@@ -139,7 +139,7 @@ end
 
 function main()
 	os.execute("clear")
-	print("1. Partition the disk\n2. Format and mount the paritions\n3. Pacstrap the system and generate fstab\n4. CHROOT\n5.CHROOT-SETUP(execute only when you are in chroot environment!) ")
+	print("1. Partition the disk\n2. Format and mount the paritions\n3. Pacstrap the system and generate fstab\n4. CHROOT\n5.CHROOT-SETUP(execute only when you are in chroot environment!)\n6. Unmount and reboot")
 	local choice = io.read()
 	if choice == "1" then
 		os.execute("cfdisk")
@@ -170,7 +170,9 @@ function main()
 	elseif choice == "5" then
 		chroot_setup()
 		main()
-
+	elseif choice == "6" then
+		os.execute("umount -R /mnt")
+		os.execute("reboot")
 	else 
 		print("Invalid option!")
 		main()
