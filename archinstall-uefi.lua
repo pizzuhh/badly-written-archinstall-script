@@ -22,8 +22,8 @@ function setup_grub()
 
 		print("pacman -S grub os-prober efibootmgr")
 		os.execute("pacman -S grub os-prober efibootmgr")
-		print("grub-install --target=x86_64-pc --efi-directory=/boot --bootloader-id=GRUB")
-		os.execute(string.format("grub-install --target=x86_64-pc --efi-directory=/boot --bootloader-id=GRUB"))
+		print("grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB")
+		os.execute(string.format("grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB"))
 		os.execute("grub-mkconfig -o /boot/grub/grub.cfg")
 	else 
 		print("You can always install grub or other bootloader later")
