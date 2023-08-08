@@ -1,5 +1,5 @@
 function DE()
-	print("THEY WONT BE CONFIGURED!\n1. GNOME\n2. KDE\nmore soon!")
+	print("1. GNOME\n2. KDE\nmore soon!")
 	local choice = io.read()
 	if choice == "1" then
 		os.execute("pacman -S gnome xorg xorg-server")
@@ -20,11 +20,10 @@ function setup_grub()
 	if yes_no == "y" then
 		--installing grub
 
-		print("pacman -S grub os-prober")
-		os.execute("pacman -S grub os-prober")
-		io.write("Where are we installing grub? (should be on the disk you are installing the system, example /dev/sda): ")
-		local disk = io.read()
-		os.execute(string.format("grub-install --target=i386-pc %s", disk))
+		print("pacman -S grub os-prober efibootmgr")
+		os.execute("pacman -S grub os-prober efibootmgr")
+		print("grub-install --target=x86_64-pc --efi-directory=/boot --bootloader-id=GRUB")
+		os.execute(string.format("grub-install --target=x86_64-pc --efi-directory=/boot --bootloader-id=GRUB"))
 		os.execute("grub-mkconfig -o /boot/grub/grub.cfg")
 	else 
 		print("You can always install grub or other bootloader later")
@@ -128,6 +127,12 @@ function part()
 		print("You must specify root partition!")
 		part()
 	end
+	io.write("*Enter boot partition (example /dev/sda2): ")
+	local boot = io.read()
+	if boot == nil then
+		print("You must specify boot partition!")
+		part()
+	end
 	io.write("Enter swap partition (example /dev/sda2;; enter none if you don't have): ")
 	local swap = io.read()
 	print("DEFAULT FILE SYSTEM IS EXT4!")
@@ -135,10 +140,14 @@ function part()
 	-- root
 	os.execute(string.format("mkfs.ext4 %s", root))
 	os.execute(string.format("mount %s /mnt", root))
+	-- boot
+	os.execute(string.format("mkfs.fat -F32 %s", boot))
+	os.execute(string.format("mkdir /mnt/boot"))
+	os.execute(string.format("mount %s /mnt/boot", boot))
 	-- swap
 	if swap ~= "none" then
-	os.execute(string.format("mkswap %s", swap))
-	os.execute(string.format("swapon %s", swap))
+		os.execute(string.format("mkswap %s", swap))
+		os.execute(string.format("swapon %s", swap))
 	end
 end
 
